@@ -22,7 +22,7 @@ const items = [
       img: "/p3.jpg",
       title: "Personal Portfolio Website",
       desc: "Developed a dynamic personal portfolio using React and Three.js, featuring interactive 3D elements, smooth animations, and responsive design. Showcases projects, skills, and experience with an engaging and visually appealing UI.",
-      link: "/",
+      link: "https://github.com/Riya-Sharma12/My-Portfolio/tree/main",
     }
 ];
 const imgVariants = {
