@@ -78,7 +78,7 @@ const Contact = () =>{
       </motion.form>
       </div>
 
-      <div className="cSection">
+      <div className="cSection right">
        <ContactSvg />
       </div>
     </div>

@@ -1,5 +1,5 @@
 .services{
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
     display: flex;
 }
@@ -9,12 +9,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 0%;
 }
 
 .sTitle{
    font-size: 34px; 
    margin-bottom: 24px;
-   margin-top: 20px;
+   margin-top: 10%;
 }
 
 .serviceList{
@@ -106,13 +107,34 @@
     .services {
       align-items: center;
       justify-content: center;
+      height:200%;
+      margin-left: 15%;
+      margin-top: -90px;
+    }
+    .serviceList{
+      gap: 4px;
     }
   
     .sSection {
       width: 100%;
     }
-  
+    .sSection.left {
+     
+    }
     .sSection.right {
       display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .sSection{
+      
+      margin-top: 70%;
+    }
+
+    .sTitle{
+    font-size: 34px; 
+    margin-bottom: 24px;
+    margin-top: 10%;
     }
 }

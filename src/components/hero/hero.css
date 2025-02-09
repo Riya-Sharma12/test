@@ -1,4 +1,4 @@
- .hero{
+.hero{
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -215,10 +215,10 @@ margin-bottom: 50px;
 
 @media (max-width:1280px){
     .htitle{
-        font-size:82px;
+        font-size:72px;
     }
     .bg{
-        height:75%;
+        height:70%;
         top:auto; 
         bottom: 0;
     }
@@ -226,13 +226,10 @@ margin-bottom: 50px;
         height: 100%;
     }
 
-    .htitle{
-        font-size:64px;
-    }
-
     .awards{
         width: 60%;
     }
+
     .bubbleContainer{
         width: 70%;
     } 
@@ -256,6 +253,7 @@ margin-bottom: 50px;
     font-size: 12px;
     padding-top: 8px;
 }
+
 }
 
 @media (max-width:768px){
