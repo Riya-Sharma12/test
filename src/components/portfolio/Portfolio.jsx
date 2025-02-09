@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./portfolio.css";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { debounce } from "lodash";
 
 const items = [
   {
@@ -27,16 +26,18 @@ const items = [
   },
 ];
 
-const isSmallScreen = window.innerWidth < 768;
-
 const imgVariants = {
   initial: {
-    opacity: isSmallScreen ? 1 : 0,
+    x: -500,
+    y: 500,
+    opacity: 0,
   },
   animate: {
+    x: 0,
+    y: 0,
     opacity: 1,
     transition: {
-      duration: isSmallScreen ? 0 : 0.5,
+      duration: 0.5,
       ease: "easeInOut",
     },
   },
@@ -44,14 +45,18 @@ const imgVariants = {
 
 const textVariants = {
   initial: {
-    opacity: isSmallScreen ? 1 : 0,
+    x: 500,
+    y: 500,
+    opacity: 0,
   },
   animate: {
+    x: 0,
+    y: 0,
     opacity: 1,
     transition: {
-      duration: isSmallScreen ? 0 : 0.5,
+      duration: 0.5,
       ease: "easeInOut",
-      staggerChildren: isSmallScreen ? 0 : 0.05,
+      staggerChildren: 0.05,
     },
   },
 };
@@ -67,7 +72,7 @@ const ListItem = ({ item }) => {
         animate={isInView ? "animate" : "initial"}
         className="pImg"
       >
-        <img src={isInView ? item.img : ""} alt="" loading="lazy" />
+        <img src={item.img} alt="" />
       </motion.div>
       <motion.div
         variants={textVariants}
@@ -85,25 +90,19 @@ const ListItem = ({ item }) => {
 };
 
 const Portfolio = () => {
-  const [containerDistance, setContainerDistance] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    const calculateDistance = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-        setContainerDistance(rect.left);
-      }
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    const debouncedCalculateDistance = debounce(calculateDistance, 100);
-
-    calculateDistance();
-
-    window.addEventListener("resize", debouncedCalculateDistance);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
     return () => {
-      window.removeEventListener("resize", debouncedCalculateDistance);
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
 
@@ -112,18 +111,23 @@ const Portfolio = () => {
   const xTranslate = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, isSmallScreen ? 0 : -window.innerWidth * items.length]
+    [0, -window.innerWidth * items.length]
   );
 
   return (
     <div className="portfolio" ref={ref}>
-      <motion.div className="pList" style={{ x: xTranslate }}>
-        <div
-          className="empty"
-          style={{
-            width: window.innerWidth - containerDistance,
-          }}
-        />
+      <motion.div
+        className="pList"
+        style={{ x: isMobile ? 0 : xTranslate }}
+      >
+        {!isMobile && (
+          <div
+            className="empty"
+            style={{
+              width: window.innerWidth - (ref.current?.getBoundingClientRect().left || 0),
+            }}
+          />
+        )}
         {items.map((item) => (
           <ListItem item={item} key={item.id} />
         ))}
@@ -131,28 +135,30 @@ const Portfolio = () => {
       <section />
       <section />
       <section />
-      <div className="pProgress">
-        <svg width="100%" height="100%" viewBox="0 0 160 160">
-          <circle
-            cx="80"
-            cy="80"
-            r="70"
-            fill="none"
-            stroke="#ddd"
-            strokeWidth={20}
-          />
-          <motion.circle
-            cx="80"
-            cy="80"
-            r="70"
-            fill="none"
-            stroke="#dd4c62"
-            strokeWidth={20}
-            style={{ pathLength: scrollYProgress }}
-            transform="rotate(-90 80 80)"
-          />
-        </svg>
-      </div>
+      {!isMobile && (
+        <div className="pProgress">
+          <svg width="100%" height="100%" viewBox="0 0 160 160">
+            <circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="#ddd"
+              strokeWidth={20}
+            />
+            <motion.circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="#dd4c62"
+              strokeWidth={20}
+              style={{ pathLength: scrollYProgress }}
+              transform="rotate(-90 80 80)"
+            />
+          </svg>
+        </div>
+      )}
     </div>
   );
 };
